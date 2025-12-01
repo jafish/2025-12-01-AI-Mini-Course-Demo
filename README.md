@@ -1,0 +1,1 @@
+# 2025-12-01-AI-Mini-Course-Demo
