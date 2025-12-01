@@ -13,6 +13,10 @@ import { exportChartAsPNG } from '../utils/exportImage';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
+// Configuration constants for chart limits
+const MAX_CHART_ROWS = 100;
+const MAX_PIE_SLICES = 10;
+
 const CHART_TYPES = [
   { id: 'bar', label: 'Bar Chart' },
   { id: 'line', label: 'Line Chart' },
@@ -43,8 +47,7 @@ export default function ChartPanel({ data, columns }) {
 
   // Prepare chart data (limit to prevent performance issues)
   const chartData = useMemo(() => {
-    const maxRows = 100;
-    const limitedData = data.slice(0, maxRows);
+    const limitedData = data.slice(0, MAX_CHART_ROWS);
     
     return limitedData.map((row, index) => ({
       ...row,
@@ -66,7 +69,7 @@ export default function ChartPanel({ data, columns }) {
     
     return Object.entries(aggregated)
       .map(([name, value]) => ({ name, value }))
-      .slice(0, 10); // Limit to 10 slices
+      .slice(0, MAX_PIE_SLICES);
   }, [data, xAxis, yAxis, chartType]);
 
   const handleExport = async () => {
@@ -295,9 +298,9 @@ export default function ChartPanel({ data, columns }) {
         id="chart-container" 
         className="bg-white p-4 rounded-lg border border-gray-200"
       >
-        {data.length > 100 && (
+        {data.length > MAX_CHART_ROWS && (
           <div className="text-sm text-yellow-600 mb-2">
-            Note: Showing first 100 rows for performance. Export to CSV to see all data.
+            Note: Showing first {MAX_CHART_ROWS} rows for performance. Export to CSV to see all data.
           </div>
         )}
         {renderChart()}

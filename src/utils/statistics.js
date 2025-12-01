@@ -1,3 +1,6 @@
+// Threshold for determining if a column is numeric (percentage of valid numeric values)
+const NUMERIC_COLUMN_THRESHOLD = 0.5;
+
 /**
  * Calculate statistics for numeric data
  */
@@ -50,7 +53,7 @@ export function isNumericColumn(data, column) {
     return val !== '' && val !== null && val !== undefined && !isNaN(parseFloat(val));
   }).length;
 
-  return numericCount > data.length * 0.5; // At least 50% numeric
+  return numericCount > data.length * NUMERIC_COLUMN_THRESHOLD;
 }
 
 /**
